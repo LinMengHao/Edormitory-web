@@ -8,7 +8,11 @@
 
     <el-form label-width="120px">
       <el-form-item label="用户名">
-        <el-input v-model="user.username" />
+        <el-input v-model="user.username" readonly/>
+      </el-form-item>
+      <el-form-item  label="密码">
+        <el-input v-if="this.$route.params && this.$route.params.id" v-model="user.password" readonly/>
+        <el-input v-else v-model="user.password" />
       </el-form-item>
       <el-form-item label="姓名">
         <el-input v-model="user.nickname" />
@@ -17,7 +21,7 @@
         <el-select v-model="user.sex" clearable placeholder="请选择">
           <!--
             数据类型一定要和取出的json中的一致，否则没法回填
-            value使用动态绑定的值，讲师头衔由1 2代替
+            value使用动态绑定的值，用户头衔由1 2代替
           -->
           <el-option :value="0" label="男" />
           <el-option :value="1" label="女" />
@@ -33,7 +37,7 @@
         <el-select v-model="user.status" clearable placeholder="请选择">
           <!--
             数据类型一定要和取出的json中的一致，否则没法回填
-            value使用动态绑定的值，讲师头衔由1 2代替
+            value使用动态绑定的值，用户头衔由1 2代替
           -->
           <el-option :value="0" label="未激活" />
           <el-option :value="1" label="激活" />
@@ -44,9 +48,11 @@
           v-model="user.birth"
           type="date"
           placeholder="选择日期"
-        />
+          format="yyyy/MM/dd"
+          value-format="yyyy-MM-dd">
+        </el-date-picker>
       </el-form-item>
-      <!-- 讲师头像 -->
+      <!-- 用户头像 -->
       <el-form-item label="用户头像">
         <el-upload
           :show-file-list="true"
@@ -80,6 +86,7 @@ export default {
   data() {
     return {
       user: {
+        password: '',
         username: '',
         nickname: '',
         sex: 0,
@@ -107,7 +114,7 @@ export default {
     // 文件上传成功
     handleAvatarSuccess(response) {
       if (response.success) {
-        this.teacher.avatar = response.data.url
+        this.user.avatar = response.data.url
         // 强制重新渲染
         this.$forceUpdate()
       } else {
@@ -153,7 +160,7 @@ export default {
         }// v-model双向绑定
       }
     },
-    // 根据讲师id查到讲师信息 回显操作
+    // 根据用户id查到用户信息 回显操作
     getInfo(id) {
       userApi.getUserById(id)
         .then(response => {
@@ -167,9 +174,9 @@ export default {
         })
     },
 
-    // 保存按钮调用的方法
+    // 保存按钮调用的方法，调用前判断是修改还是添加用户
     saveOrUpdate() {
-      // 判断修改或添加 teacher是否有id
+      // 判断修改或添加 user是否有id
       if (!this.user.id) {
         // 添加
         this.addUser()
@@ -179,7 +186,7 @@ export default {
       }
     },
 
-    // 添加讲师的方法
+    // 添加用户的方法
     addUser() {
       userApi.addUser(this.user)
         .then(response => { // 添加成功
@@ -188,7 +195,7 @@ export default {
             type: 'success',
             message: '添加成功！ 😄'
           })
-          // 回到讲师列表页面
+          // 回到用户列表页面
           // vue路由跳转
           this.$router.push({
             path: '/system/user/list'
@@ -196,7 +203,7 @@ export default {
         })
     },
 
-    // 修改讲师的方法
+    // 修改用户的方法
     updateUser() {
       userApi.updateUser(this.user)
         .then(response => { // 修改成功
@@ -205,7 +212,7 @@ export default {
             type: 'success',
             message: '修改成功！ 🧙‍♂️'
           })
-          // 回到讲师列表页面
+          // 回到用户列表页面
           // vue路由跳转
           this.$router.push({
             path: '/system/user/list'
