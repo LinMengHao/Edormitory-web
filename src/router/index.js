@@ -93,20 +93,56 @@ export const constantRoutes = [
         path: 'role',
         name: 'Role',
         component: () => import('@/views/tree/index'),
-        meta: { title: '角色权限', icon: 'people' }
+        meta: { title: '角色权限', icon: 'lock' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/student',
     component: Layout,
+    redirect: '/student/list',
+    name: 'student',
+    meta: {
+      title: '学生管理中心',
+      icon: 'people',
+    },
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'list',
+        component: () => import('@/views/dormitory/student/list'),
+        name: 'list',
+        meta: {
+          title: '学生列表',
+          icon: 'peoples',
+        }
+      },
+      {
+        path: 'self:/id',
+        component: () => import('@/views/dormitory/student/self'),
+        name: 'self',
+        meta: {
+          title: '学生个人信息',
+          icon: 'user',
+        }
+      },
+      {
+        path: 'myDormitory',
+        component: () => import('@/views/dormitory/student/myDormitory'),
+        name: 'myDormitory',
+        meta: {
+          title: '个人宿舍管理',
+          icon: 'theme',
+        }
+      },
+      {
+        path: 'myDormitoryScore',
+        component: () => import('@/views/dormitory/student/myDormitoryScore'),
+        name: 'myDormitoryScore',
+        meta: {
+          title: '个人宿舍得分',
+          icon: 'star',
+        }
       }
     ]
   },
