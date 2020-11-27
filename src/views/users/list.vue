@@ -70,7 +70,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <!--    分页-->
+    <!--    分页
     <el-pagination
       :current-page="current"
       :page-size="size"
@@ -78,16 +78,26 @@
       style="padding: 30px 0; text-align: center;"
       layout="total, prev, pager, next, jumper"
       @current-change="getList"
-    />
+    />-->
+    <el-pagination
+      @size-change="sizeChange"
+      @current-change="getList"
+      :current-page="current"
+      :page-sizes="[10,20,30,40,50,1000,10000]"
+      :page-size="size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </div>
 </template>
 <script>
   // 引入api下的user.js文件
   import userApi from '@/api/users/users.js'
   import waves from '@/directive/waves'
+  import Pagination from '@/components/Pagination'
 
   export default {
-    directives: { waves },
+    directives: { waves , Pagination},
     // 写核心代码的位置
     data() { // 定义变量和初始值
       return {
@@ -104,7 +114,13 @@
       // 调用
       this.getList()
     },
-    methods: { // 创建具体的方法，调用user.js定义的方法
+    methods: {
+      //每页记录数改变
+      sizeChange(v) {
+        this.size = v
+        this.getList()
+      },
+      // 创建具体的方法，调用user.js定义的方法
       getList(current = 1) { // 用户列表
         this.listLoading = true
         this.current = current

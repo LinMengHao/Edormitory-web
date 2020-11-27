@@ -97,7 +97,6 @@ export const constantRoutes = [
       }
     ]
   },
-
   {
     path: '/student',
     component: Layout,

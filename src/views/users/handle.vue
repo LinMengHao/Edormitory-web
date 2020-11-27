@@ -52,7 +52,30 @@
           value-format="yyyy-MM-dd">
         </el-date-picker>
       </el-form-item>
-      <!-- 用户头像 -->
+      <el-form-item label="用户头像">
+        <!--        头像缩略图-->
+        <pan-thumb :image="user.avatar"/>
+        <!--        文件上传按钮-->
+        <el-button type="primary" icon="el-icon-upload" @click="imagecropperShow=true">更换头像</el-button>
+        <!--
+        v-show:是否显示上传组件
+        ：key ：类似于id，如果一个页面上传多个图片控件，可以作区分
+        ：url ：后台上传的url地址
+        @close：关闭上传组件
+        @crop-upload-success: 上传成功后的回调
+        -->
+        <image-cropper
+          v-show="imagecropperShow"
+          :width="300"
+          :height="300"
+          :key="imagecropperKey"
+          :url="BASE_API+'/ossService/fileOss/avatar'"
+          field="file"
+          @close="close"
+          @crop-upload-success="cropSuccess"
+        />
+      </el-form-item>
+      <!-- 用户头像
       <el-form-item label="用户头像">
         <el-upload
           :show-file-list="true"
@@ -66,7 +89,7 @@
           <i v-else class="el-icon-plus avatar-uploader-icon" />
         </el-upload>
       </el-form-item>
-      <span style="margin-left: 8.7%;font-size: 20px; font-weight: 400;">*点击图片框修改头像*</span>
+      <span style="margin-left: 8.7%;font-size: 20px; font-weight: 400;">*点击图片框修改头像*</span>-->
       <br><br><br>
       <el-form-item>
         <el-button :disabled="saveBtnDisabled" plain="true" type="primary" @click="saveOrUpdate">保存</el-button>
@@ -111,35 +134,48 @@ export default {
     this.init()
   },
   methods: {
-    // 文件上传成功
-    handleAvatarSuccess(response) {
-      if (response.success) {
-        this.user.avatar = response.data.url
-        // 强制重新渲染
-        this.$forceUpdate()
-      } else {
-        this.$message.error('上传失败! （非20000）')
-      }
+    //关闭上传弹框的方法
+    close(){
+      this.imagecropperShow=false
+      //初始化上传组件
+      this.imagecropperKey=this.imagecropperKey+1
     },
-
-    // 文件上传失败（http）
-    handleAvatarError() {
-      this.$message.error('上传失败! （http失败）')
+    //上传成功方法
+    cropSuccess(data){
+      this.imagecropperShow=false
+      //上传之后接口返回图片地址
+      this.user.avatar=data.url
+      this.imagecropperKey=this.imagecropperKey+1
     },
-
-    // 上传校验
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt3M = file.size / 1024 / 1024 < 3
-
-      if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
-      }
-      if (!isLt3M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
-      }
-      return isJPG && isLt3M
-    },
+    // // 文件上传成功
+    // handleAvatarSuccess(response) {
+    //   if (response.success) {
+    //     this.user.avatar = response.data.url
+    //     // 强制重新渲染
+    //     this.$forceUpdate()
+    //   } else {
+    //     this.$message.error('上传失败! （非20000）')
+    //   }
+    // },
+    //
+    // // 文件上传失败（http）
+    // handleAvatarError() {
+    //   this.$message.error('上传失败! （http失败）')
+    // },
+    //
+    // // 上传校验
+    // beforeAvatarUpload(file) {
+    //   const isJPG = file.type === 'image/jpeg'
+    //   const isLt3M = file.size / 1024 / 1024 < 3
+    //
+    //   if (!isJPG) {
+    //     this.$message.error('上传头像图片只能是 JPG 格式!')
+    //   }
+    //   if (!isLt3M) {
+    //     this.$message.error('上传头像图片大小不能超过 2MB!')
+    //   }
+    //   return isJPG && isLt3M
+    // },
 
     init() {
       // 判断路径有id值  修改操作
