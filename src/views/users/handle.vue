@@ -6,18 +6,19 @@
       <div v-else>添加用户</div>
     </div>
 
-    <el-form label-width="120px">
-      <el-form-item label="用户名">
-        <el-input v-model="user.username" readonly/>
+    <el-form label-width="120px" :rules="rules" :model="user">
+      <el-form-item label="用户名" prop="username">
+        <el-input v-if="this.$route.params && this.$route.params.id" v-model="user.username" readonly/>
+        <el-input v-else v-model="user.username" />
       </el-form-item>
-      <el-form-item  label="密码">
+      <el-form-item  label="密码" prop="password">
         <el-input v-if="this.$route.params && this.$route.params.id" v-model="user.password" readonly/>
         <el-input v-else v-model="user.password" />
       </el-form-item>
-      <el-form-item label="姓名">
+      <el-form-item label="姓名" prop="nickname">
         <el-input v-model="user.nickname" />
       </el-form-item>
-      <el-form-item label="性别">
+      <el-form-item label="性别" prop="sex">
         <el-select v-model="user.sex" clearable placeholder="请选择">
           <!--
             数据类型一定要和取出的json中的一致，否则没法回填
@@ -27,13 +28,13 @@
           <el-option :value="1" label="女" />
         </el-select>
       </el-form-item>
-      <el-form-item label="电话号码">
+      <el-form-item label="电话号码" prop="phoneNumber">
         <el-input v-model="user.phoneNumber" />
       </el-form-item>
-      <el-form-item label="邮箱">
+      <el-form-item label="邮箱" prop="email">
         <el-input v-model="user.email" />
       </el-form-item>
-      <el-form-item label="状态">
+      <el-form-item label="状态" prop="status">
         <el-select v-model="user.status" clearable placeholder="请选择">
           <!--
             数据类型一定要和取出的json中的一致，否则没法回填
@@ -43,7 +44,7 @@
           <el-option :value="1" label="激活" />
         </el-select>
       </el-form-item>
-      <el-form-item label="出生日期">
+      <el-form-item label="出生日期" prop="status">
         <el-date-picker
           v-model="user.birth"
           type="date"
@@ -52,7 +53,7 @@
           value-format="yyyy-MM-dd">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="用户头像">
+      <el-form-item label="用户头像" prop="avatar">
         <!--        头像缩略图-->
         <pan-thumb :image="user.avatar"/>
         <!--        文件上传按钮-->
@@ -107,6 +108,26 @@ import PanThumb from '@/components/PanThumb'
 export default {
   components: { ImageCropper, PanThumb }, // 组件的声明
   data() {
+    const checkEmail = (rule, value, callback) => {
+      const mailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
+      if (!value) {
+        return callback(new Error('邮箱不能为空'))
+      }
+      setTimeout(() => {
+        if (mailReg.test(value)) {
+          callback()
+        } else {
+          callback(new Error('请输入正确的邮箱格式'))
+        }
+      }, 100)
+    }
+    const validatePhoneNumber = (rule, value, callback) => {
+      if (/^1[34578]\d{9}$/.test(value) === false) {
+        callback(new Error("手机号格式错误"));
+      } else {
+        callback();
+      }
+    }
     return {
       user: {
         password: '',
@@ -122,7 +143,42 @@ export default {
       imagecropperShow: false, // 上传弹框组件是否显示
       imagecropperKey: 0, // 上传组件唯一标识
       BASE_API: process.env.VUE_APP_BASE_API, // 获取dev.env.js里面地址
-      saveBtnDisabled: false // 保存按钮是否禁用
+      saveBtnDisabled: false, // 保存按钮是否禁用
+      rules: {
+        // 要以数组形式展示
+        username: [
+          { required: true, message: "用户名不能为空", trigger: "blur"}
+        ],
+        nickname: [
+          {
+            required: true, message: "用户名不能为空", trigger: "blur"
+          }
+        ],
+        email: [
+          {
+            required: true,
+            trigger: "blur",
+            validator: checkEmail
+          }
+        ],
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
+          { min: 6,  message: "长度要大于 6 字符", trigger: "blur" }
+        ],
+        phoneNumber: [
+          {
+            required: true,
+            message: "请输入手机号码",
+            trigger: "blur"
+          },
+          {
+            validator: validatePhoneNumber,
+            trigger: "blur"
+          }
+        ],
+
+
+      }
     }
   },
   watch: { // vue的监听

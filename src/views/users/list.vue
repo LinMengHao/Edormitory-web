@@ -176,10 +176,14 @@
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename: 'table-list'
+            filename: '用户列表'
           })
           this.downloadLoading = false
         })
+        // 清空已输入数据
+        this.userQuery = {}
+        // 查询所有  恢复未进行条件查询的状态
+        this.getList()
       },
       formatJson(filterVal) {
         this.list.map(s => {

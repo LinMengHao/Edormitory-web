@@ -82,5 +82,16 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
+// service.interceptors.response.use(response => {
+//     const res = response.data
+//     console.info(res)
+//     if (res.token === null) {
+//       return Promise.reject(new Error(res.message || 'Error'))
+//     } else {
+//       return res
+//     }
+//   },
+//   error => {
+//     console.log('err' + error) // for debug return Promise.reject(error)
+//   })
 export default service
