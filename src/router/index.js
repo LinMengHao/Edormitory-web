@@ -146,6 +146,56 @@ export const constantRoutes = [
     ]
   },
 
+
+  {
+    path: '/dormitory',
+    component: Layout,
+    redirect: '/dormitory/build',
+    name: 'dormitory',
+    meta: {
+      title: '宿舍楼管理',
+      icon: 'table',
+    },
+    children: [
+      {
+        path: 'build',
+        component: () => import('@/views/dormitory/dormitory/build'),
+        name: 'build',
+        meta: {
+          title: '楼宇列表',
+          icon: 'table',
+        }
+      },
+      {
+        path: 'dormitories',
+        component: () => import('@/views/dormitory/dormitory/dormitory'),
+        name: 'dormitories',
+        meta: {
+          title: '宿舍列表',
+          icon: 'theme',
+        }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/dormitory/dormitory/handle'),
+        name: 'add',
+        meta: {
+          title: '添加宿舍',
+          icon: 'theme',
+        }
+      },
+      {
+        path: 'update/:id',
+        component: () => import('@/views/dormitory/dormitory/handle'),
+        name: 'update',
+        meta: {
+          title: '修改宿舍信息',
+          icon: 'form',
+        },
+        hidden: true
+      }
+    ]
+  },
   {
     path: '/nested',
     component: Layout,
