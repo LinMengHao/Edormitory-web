@@ -220,7 +220,7 @@
       },
       //修改弹框显示并添加信息回显
       openDialog1(id){
-        buildApi.getBuildById(id).then(response => {
+        buildApi.getById(id).then(response => {
           this.build=response.data.build
           this.dialogPvVisible=true
         }).catch(error => { //请求失败
@@ -240,7 +240,7 @@
       },
       //详情方法
       openDialog(id) {
-        buildApi.getMembersById(id).then(response => {
+        buildApi.getById(id).then(response => {
           this.members = response.data.members
           this.dialogFormVisible = true
         }).catch(error => { //请求失败
