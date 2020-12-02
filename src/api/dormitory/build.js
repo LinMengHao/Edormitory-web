@@ -25,10 +25,17 @@ export default {
     })
   },
   // 根据id返回楼字管理员信息
-  getById(id) {
+  getMembersById(id) {
     return request({
       method: 'GET',
-      url: `/dormitoryService/build/getById/${id}`
+      url: `/dormitoryService/build/getMembersById/${id}`
+    })
+  },
+  // 根据id返回楼字管理员信息
+  getBuildById(id) {
+    return request({
+      method: 'GET',
+      url: `/dormitoryService/build/getBuildById/${id}`
     })
   },
   // 修改用户
