@@ -40,27 +40,35 @@
       </el-table-column>
       <el-table-column label="修改时间" prop="modifiedTime" width="200px" align="center">
       </el-table-column>
-      <el-table-column label="操作" width="100" align="center" fixed="right">
+      <el-table-column label="楼字管理员详情" fixed="right" width="90" align="center" >
         <template slot-scope="scope">
-          <el-button type="primary" plain="true" size="mini" icon="el-icon-edit" @click="openDialog(scope.row.id)">详情
+          <el-button type="primary" plain="true" size="mini" icon="el-icon-view" @click="openDialog(scope.row.id)">详情
           </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="修改楼房信息" width="90" fixed="right" align="center" >
+        <template slot-scope="scope">
           <el-button type="primary" plain="true" size="mini" icon="el-icon-edit" @click="openDialog1(scope.row.id)">修改
           </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="删除" width="90" align="center" fixed="right">
+        <template slot-scope="scope">
           <el-button type="danger" size="mini" plain="true" icon="el-icon-delete"
                      @click="removeDataById(scope.row.id)">删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-
     <el-pagination
-      :current-page="current"
-      :page-size="size"
-      :total="total"
-      style="padding: 30px 0; text-align: center;"
-      layout="total, prev, pager, next, jumper"
+      @size-change="sizeChange"
       @current-change="getList"
-    />
+      :current-page="current"
+      :page-sizes="[10,20,30,40,50,1000,10000]"
+      :page-size="size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
 
 <!-- 详情弹框-->
     <el-dialog :title="详情" :visible.sync="dialogFormVisible">
@@ -113,13 +121,11 @@
         <el-form-item label="地址">
           <el-input v-model="build.address"></el-input>
         </el-form-item>
-        <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="addBuild()">添加</el-button>
-        </span>
-        <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogSaveVisible = false">取消</el-button>
-        </span>
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addBuild()">添加</el-button>
+        <el-button type="primary" @click="dialogSaveVisible = false">取消</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -156,6 +162,11 @@
       this.getList()
     },
     methods: {
+      //每页记录数改变
+      sizeChange(v) {
+        this.size = v
+        this.getList()
+      },
       //添加楼字
       addBuild(){
         buildApi.addBuild(this.build)
@@ -168,12 +179,21 @@
             // 回到用户列表页面
             // vue路由跳转
             this.dialogSaveVisible=false
-            this.build=null
+            this.build={
+              id: null,
+              name: '',
+              address: '',
+            }
           })
+        this.handleFilter()
       },
       //添加楼字弹窗开启
       openDialog2(){
-        this.build=null
+        this.build={
+            id: null,
+            name: '',
+            address: '',
+        }
         this.dialogSaveVisible=true
       },
       //删除楼宇
@@ -215,6 +235,7 @@
             message: '修改成功！ 🧙‍♂️'
           })
           this.dialogPvVisible=false
+          this.handleFilter()
         }).catch(error => { console.log(error)})
       },
       //详情方法
@@ -238,6 +259,7 @@
         }).catch(error => { //请求失败
           console.log(error)
         })
+
       },
       handleFilter() {
         this.current = 1
@@ -252,7 +274,7 @@
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename: 'build-list'
+            filename: '宿舍楼表'
           })
           this.downloadLoading = false
         })

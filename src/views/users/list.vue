@@ -1,84 +1,71 @@
 <template>
   <div class="app-container">
-    <div
-      style="line-height: 40px; font-weight: 700; font-size: 22px; color: #a85a11; margin-left: 10px; text-align: center">
-      用户列表
-    </div>
-    <!--    查询条件表单-->
-    <el-form class="filter-item">
-      <el-input v-model="userQuery.username" placeholder="用户名" class="filter-item" style="width: 150px;"/>
-      <el-input v-model="userQuery.nickname" placeholder="姓名" class="filter-item" style="width: 150px;"/>
-      <el-input v-model="userQuery.phoneNumber" placeholder="电话号码" class="filter-item" style="width: 150px;"/>
-      <el-select v-model="userQuery.sex" placeholder="性别" class="filter-item" style="width: 90px" @change="getList">
+    <div class="filter-container">
+      <el-input v-model="userQuery.username" placeholder="用户名" style="width: 150px;" class="filter-item"
+                @keyup.enter.native="handleFilter"/>
+      <el-input v-model="userQuery.nickname" placeholder="姓名" style="width: 150px;" class="filter-item"
+                @keyup.enter.native="handleFilter"/>
+      <el-input v-model="userQuery.phoneNumber" placeholder="电话号码" style="width: 150px;" class="filter-item"
+                @keyup.enter.native="handleFilter"/>
+      <el-select v-model="userQuery.sex" placeholder="性别" clearable style="width: 90px" class="filter-item" @change="handleFilter">
         <el-option label="男" value="0"/>
         <el-option label="女" value="1"/>
       </el-select>
-      <el-select v-model="userQuery.status" placeholder="状态" class="filter-item" style="width: 90px" @change="getList">
-        <el-option label="已激活" value="1"/>
-        <el-option label="未激活" value="0"/>
-      </el-select>
-      <el-button v-waves type="primary" icon="el-icon-search" class="filter-item" @click="getList()">查询</el-button>
-      <el-button v-waves type="default" class="filter-item" @click="resetData()">清空</el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-document"
+      <el-select v-model="userQuery.status" placeholder="状态" clearable class="filter-item" style="width: 90px" @change="handleFilter">
+      <el-option label="已激活" value="1"/>
+      <el-option label="未激活" value="0"/>
+    </el-select>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        查询
+      </el-button>
+      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download"
                  @click="handleDownload">
         导出
       </el-button>
-    </el-form>
-    <!--    表格-->
-    <div style="width: 900px;margin: auto">
-      <el-table
-        v-loading="listLoading"
-        element-loading-text="数据加载中"
-        fit
-        highlight-current-row
-        :data="list"
-        border
-        style="width: 100%"
-      >
-        <el-table-column fixed label="序号" width="50" align="center">
-          <template slot-scope="scope">
-            {{ (current - 1) * size + scope.$index + 1 }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="username" label="用户名" width="120" align="center"/>
-        <el-table-column prop="nickname" label="姓名" width="120" align="center"/>
-        <el-table-column prop="birth" label="出生日期" width="170" align="center"/>
-        <el-table-column label="性别" width="60">
-          <template slot-scope="scope">
-            <!-- ===判断类型和值 -->
-            {{ scope.row.sex===1?'女':'男' }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="phoneNumber" label="电话号码" width="120" align="center"/>
-        <el-table-column prop="email" label="邮箱" width="150"/>
-        <el-table-column prop="createTime" label="创建时间" width="160" align="center"/>
-        <el-table-column label="状态" width="60" align="center">
-          <template slot-scope="scope">
-            <!-- ===判断类型和值 -->
-            {{ scope.row.status===1?'激活':'未激活' }}
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="100" align="center" fixed="right">
-          <template slot-scope="scope">
-            <router-link :to="'/system/user/update/'+scope.row.id">
-              <el-button type="primary" plain="true" size="mini" icon="el-icon-edit">修改</el-button>
-            </router-link>
-            <el-button type="danger" size="mini" plain="true" icon="el-icon-delete"
-                       @click="removeDataById(scope.row.id)">删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
     </div>
-    <!--    分页
-    <el-pagination
-      :current-page="current"
-      :page-size="size"
-      :total="total"
-      style="padding: 30px 0; text-align: center;"
-      layout="total, prev, pager, next, jumper"
-      @current-change="getList"
-    />-->
+
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%;"
+    >
+      <el-table-column fixed label="序号" width="50" align="center">
+        <template slot-scope="scope">
+          {{ (current - 1) * size + scope.$index + 1 }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="username" label="用户名" width="120" align="center"/>
+      <el-table-column prop="nickname" label="姓名" width="120" align="center"/>
+      <el-table-column prop="birth" label="出生日期" width="170" align="center"/>
+      <el-table-column label="性别" width="60">
+        <template slot-scope="scope">
+          <!-- ===判断类型和值 -->
+          {{ scope.row.sex===1?'女':'男' }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="phoneNumber" label="电话号码" width="120" align="center"/>
+      <el-table-column prop="email" label="邮箱" width="150"/>
+      <el-table-column prop="createTime" label="创建时间" width="160" align="center"/>
+      <el-table-column label="状态" width="60" align="center">
+        <template slot-scope="scope">
+          <!-- ===判断类型和值 -->
+          {{ scope.row.status===1?'激活':'未激活' }}
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="150" align="center" fixed="right">
+        <template slot-scope="scope">
+          <router-link :to="'/system/update/'+scope.row.id">
+            <el-button type="primary" plain="true" size="mini" icon="el-icon-edit">修改</el-button>
+          </router-link>
+          <el-button type="danger" size="mini" plain="true" icon="el-icon-delete"
+                     @click="removeDataById(scope.row.id)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
     <el-pagination
       @size-change="sizeChange"
       @current-change="getList"
@@ -93,11 +80,13 @@
 <script>
   // 引入api下的user.js文件
   import userApi from '@/api/users/users.js'
-  import waves from '@/directive/waves'
+  import waves from '@/directive/waves' // waves directive
+  import { parseTime } from '@/utils'
   import Pagination from '@/components/Pagination'
 
   export default {
-    directives: { waves , Pagination},
+    components: { Pagination },
+    directives: { waves },
     // 写核心代码的位置
     data() { // 定义变量和初始值
       return {
@@ -120,10 +109,13 @@
         this.size = v
         this.getList()
       },
+      handleFilter() {
+        this.current = 1
+        this.getList()
+      },
       // 创建具体的方法，调用user.js定义的方法
-      getList(current = 1) { // 用户列表
+      getList() { // 用户列表
         this.listLoading = true
-        this.current = current
         userApi.getUser(this.current, this.size, this.userQuery)
           .then(response => { // 请求成功
             // response接口返回的数据

@@ -58,37 +58,30 @@ export const constantRoutes = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/system/user',
+    redirect: '/system/list',
     name: 'System',
     meta: { title: '系统管理', icon: 'el-icon-s-help' },
     children: [
       {
-        path: 'user',
-        name: 'User',
-        component: () => import('@/views/users/index'),
-        meta: { title: '用户管理', icon: 'user' },
-        children: [
-          {
-            path: 'list',
-            name: 'List',
-            component: () => import('@/views/users/list'),
-            meta: { title: '用户列表', icon: 'peoples' }
-          },
-          {
-            path: 'update/:id',
-            name: 'Update',
-            component: () => import('@/views/users/handle'),
-            meta: { title: '修改用户', icon: 'edit' },
-            hidden: true
-          },
-          {
-            path: 'add',
-            name: 'Add',
-            component: () => import('@/views/users/handle'),
-            meta: { title: '添加用户', icon: 'edit' }
-          }
-        ]
+        path: 'list',
+        name: 'List',
+        component: () => import('@/views/users/list'),
+        meta: { title: '用户列表', icon: 'peoples' }
       },
+      {
+        path: 'update/:id',
+        name: 'Update',
+        component: () => import('@/views/users/handle'),
+        meta: { title: '修改用户', icon: 'edit' },
+        hidden: true
+      },
+      {
+        path: 'add',
+        name: 'Add',
+        component: () => import('@/views/users/handle'),
+        meta: { title: '添加用户', icon: 'edit' }
+      },
+
       {
         path: 'role',
         name: 'Role',
@@ -104,7 +97,7 @@ export const constantRoutes = [
     name: 'student',
     meta: {
       title: '学生管理中心',
-      icon: 'people',
+      icon: 'people'
     },
     children: [
       {
@@ -113,7 +106,7 @@ export const constantRoutes = [
         name: 'list',
         meta: {
           title: '学生列表',
-          icon: 'peoples',
+          icon: 'peoples'
         }
       },
       {
@@ -122,7 +115,7 @@ export const constantRoutes = [
         name: 'self',
         meta: {
           title: '学生个人信息',
-          icon: 'user',
+          icon: 'user'
         }
       },
       {
@@ -131,7 +124,7 @@ export const constantRoutes = [
         name: 'myDormitory',
         meta: {
           title: '个人宿舍管理',
-          icon: 'theme',
+          icon: 'theme'
         }
       },
       {
@@ -140,12 +133,11 @@ export const constantRoutes = [
         name: 'myDormitoryScore',
         meta: {
           title: '个人宿舍得分',
-          icon: 'star',
+          icon: 'star'
         }
       }
     ]
   },
-
 
   {
     path: '/dormitory',
@@ -154,7 +146,7 @@ export const constantRoutes = [
     name: 'dormitory',
     meta: {
       title: '宿舍楼管理',
-      icon: 'table',
+      icon: 'table'
     },
     children: [
       {
@@ -163,7 +155,7 @@ export const constantRoutes = [
         name: 'build',
         meta: {
           title: '楼宇列表',
-          icon: 'table',
+          icon: 'table'
         }
       },
       {
@@ -172,7 +164,7 @@ export const constantRoutes = [
         name: 'dormitories',
         meta: {
           title: '宿舍列表',
-          icon: 'theme',
+          icon: 'theme'
         }
       },
       {
@@ -181,7 +173,7 @@ export const constantRoutes = [
         name: 'add',
         meta: {
           title: '添加宿舍',
-          icon: 'theme',
+          icon: 'theme'
         }
       },
       {
@@ -190,7 +182,7 @@ export const constantRoutes = [
         name: 'update',
         meta: {
           title: '修改宿舍信息',
-          icon: 'form',
+          icon: 'form'
         },
         hidden: true
       }

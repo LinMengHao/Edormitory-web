@@ -8,12 +8,16 @@
 
     <el-form label-width="120px" :rules="rules" :model="user">
       <el-form-item label="用户名" prop="username">
-        <el-input v-if="this.$route.params && this.$route.params.id" v-model="user.username" readonly/>
+        <el-input v-if="this.$route.params && this.$route.params.id" v-model="user.username" disabled/>
         <el-input v-else v-model="user.username" />
       </el-form-item>
       <el-form-item  label="密码" prop="password">
-        <el-input v-if="this.$route.params && this.$route.params.id" v-model="user.password" readonly/>
-        <el-input v-else v-model="user.password" />
+        <el-input v-if="this.$route.params && this.$route.params.id" type="password" v-model="user.password" disabled/>
+        <el-input v-else v-model="user.password" type="password" />
+      </el-form-item>
+      <el-form-item  label="确认密码" prop="password">
+        <el-input v-if="this.$route.params && this.$route.params.id" type="password" v-model="user.password" disabled/>
+        <el-input v-else placeholder="确认密码" v-model="password1" type="password" />
       </el-form-item>
       <el-form-item label="姓名" prop="nickname">
         <el-input v-model="user.nickname" />
@@ -129,6 +133,7 @@ export default {
       }
     }
     return {
+      password1: '',
       user: {
         password: '',
         username: '',
@@ -239,7 +244,7 @@ export default {
         const id = this.$route.params.id
         this.getInfo(id)
       } else { // 判断路径没有id值  添加操作
-        // 清空表单即清空teacher
+        // 清空表单即清空用户
         this.user = {
           username: '',
           nickname: '',
@@ -280,19 +285,27 @@ export default {
 
     // 添加用户的方法
     addUser() {
-      userApi.addUser(this.user)
-        .then(response => { // 添加成功
-          // 提示成功
-          this.$message({
-            type: 'success',
-            message: '添加成功！ 😄'
+      if(this.user.password===this.password1){
+        userApi.addUser(this.user)
+          .then(response => { // 添加成功
+            // 提示成功
+            this.$message({
+              type: 'success',
+              message: '添加成功！ 😄'
+            })
+            // 回到用户列表页面
+            // vue路由跳转
+            this.$router.push({
+              path: '/system/list'
+            })
           })
-          // 回到用户列表页面
-          // vue路由跳转
-          this.$router.push({
-            path: '/system/user/list'
-          })
+      }else {
+        this.$message({
+          type: 'warning',
+          message: '密码不同，请确认密码！！！'
         })
+      }
+
     },
 
     // 修改用户的方法
@@ -307,7 +320,7 @@ export default {
           // 回到用户列表页面
           // vue路由跳转
           this.$router.push({
-            path: '/system/user/list'
+            path: '/system/list'
           })
         })
     }
