@@ -167,25 +167,6 @@ export const constantRoutes = [
           icon: 'theme'
         }
       },
-      {
-        path: 'add',
-        component: () => import('@/views/dormitory/dormitory/handle'),
-        name: 'add',
-        meta: {
-          title: '添加宿舍',
-          icon: 'theme'
-        }
-      },
-      {
-        path: 'update/:id',
-        component: () => import('@/views/dormitory/dormitory/handle'),
-        name: 'update',
-        meta: {
-          title: '修改宿舍信息',
-          icon: 'form'
-        },
-        hidden: true
-      }
     ]
   },
   {
