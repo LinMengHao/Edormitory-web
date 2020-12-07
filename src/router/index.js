@@ -140,6 +140,28 @@ export const constantRoutes = [
   },
 
   {
+    path: '/member',
+    component: Layout,
+    redirect: '/member/list',
+    name: 'member',
+    meta: {
+      title: '宿管管理中心',
+      icon: 'peoples'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/dormitory/member/member'),
+        name: 'list',
+        meta: {
+          title: '宿管列表',
+          icon: 'peoples'
+        }
+      },
+    ]
+  },
+
+  {
     path: '/dormitory',
     component: Layout,
     redirect: '/dormitory/build',

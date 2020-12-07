@@ -48,7 +48,7 @@
           <el-option :value="1" label="激活" />
         </el-select>
       </el-form-item>
-      <el-form-item label="出生日期" prop="status">
+      <el-form-item label="出生日期" prop="birth">
         <el-date-picker
           v-model="user.birth"
           type="date"

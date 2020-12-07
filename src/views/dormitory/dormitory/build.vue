@@ -95,7 +95,7 @@
     </el-dialog>
 
 <!--    //修改弹窗-->
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
+    <el-dialog :visible.sync="dialogPvVisible" title="修改">
       <el-form :label-position="right" label-width="80px" :model="build">
         <el-form-item label="ID">
           <el-input v-model="build.id" readonly></el-input>
@@ -113,7 +113,7 @@
       </div>
     </el-dialog>
 <!--    //添加-->
-    <el-dialog :visible.sync="dialogSaveVisible" title="Reading statistics">
+    <el-dialog :visible.sync="dialogSaveVisible" title="添加">
       <el-form :label-position="right" label-width="80px" :model="build">
         <el-form-item label="楼名">
           <el-input v-model="build.name"></el-input>
