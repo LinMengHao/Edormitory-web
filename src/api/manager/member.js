@@ -14,7 +14,7 @@ export default {
     return request({
       method: 'POST',
       data: member,
-      url: `/dormitoryService/member/addMember`
+      url: `/manageService/member/addMember`
     })
   },
   // 删除宿管

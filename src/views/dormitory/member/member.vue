@@ -15,13 +15,13 @@
                 @keyup.enter.native="handleFilter"/>
       <el-input v-model="memberQuery.phoneNum" placeholder="电话" style="width: 200px;" class="filter-item"
                 @keyup.enter.native="handleFilter"/>
-      <el-select v-model="memberQuery.sex" clearable placeholder="请选择" @change="handleFilter">
-        <el-option :value="0" label="男"/>
-        <el-option :value="1" label="女"/>
+      <el-select v-model="memberQuery.sex" clearable placeholder="性别" @change="handleFilter">
+        <el-option :value="'男'" label="男"/>
+        <el-option :value="'女'" label="女"/>
       </el-select>
-      <el-select v-model="memberQuery.status" clearable placeholder="请选择" @change="handleFilter">
-        <el-option :value="0" label="无损坏"/>
-        <el-option :value="1" label="需维修"/>
+      <el-select v-model="memberQuery.status" clearable placeholder="状态" @change="handleFilter">
+        <el-option :value="0" label="在岗"/>
+        <el-option :value="1" label="休息"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         查询
@@ -57,7 +57,7 @@
       <el-table-column label="性别" width="60">
         <template slot-scope="scope">
           <!-- ===判断类型和值 -->
-          {{ scope.row.sex===1?'女':'男' }}
+          {{ scope.row.sex}}
         </template>
       </el-table-column>
       <el-table-column label="电话号码" prop="phoneNum" width="150px" align="center">
@@ -69,7 +69,7 @@
       <el-table-column label="状态" width="60" align="center">
         <template slot-scope="scope">
           <!-- ===判断类型和值 -->
-          {{ scope.row.status===1?'在岗':'休息' }}
+          {{ scope.row.status===0?'在岗':'休息' }}
         </template>
       </el-table-column>
       <el-table-column label="楼字详情" fixed="right" width="90" align="center" >
@@ -192,7 +192,7 @@
           <el-input v-model="member.name"></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="sex">
-          <el-select v-model="member.sex" clearable placeholder="请选择">
+          <el-select v-model="member.sex" clearable placeholder="性别">
             <el-option :value="'男'" label="男" />
             <el-option :value="'女'" label="女" />
           </el-select>
@@ -288,13 +288,13 @@
             // 回到用户列表页面
             // vue路由跳转
             this.dialogSaveVisible=false
-            this.member=null;
+            this.member={}
+            this.handleFilter()
           })
-        this.handleFilter()
       },
       //添加楼字弹窗开启
       openDialog2(){
-        this.member=null
+        this.member={}
         this.dialogSaveVisible=true
       },
       //删除楼宇

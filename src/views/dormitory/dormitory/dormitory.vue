@@ -191,7 +191,7 @@
       </div>
     </el-dialog>
     <!--    //添加-->
-    <el-dialog :visible.sync="dialogSaveVisible" title="Reading statistics">
+    <el-dialog :visible.sync="dialogSaveVisible" title="添加">
       <el-form :label-position="right" label-width="80px" :model="dormitory">
         <el-form-item label="楼名">
           <el-select v-model="dormitory.buildId" clearable placeholder="请选择楼名">
@@ -406,8 +406,8 @@
             // vue路由跳转
             this.dialogSaveVisible = false
             this.dormitory = {}
+            this.handleFilter()
           })
-        this.handleFilter()
       },
       //添加宿舍
       // 弹窗开启
