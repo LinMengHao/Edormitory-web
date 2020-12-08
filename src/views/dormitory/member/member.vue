@@ -64,6 +64,8 @@
       </el-table-column>
       <el-table-column label="地址" prop="address" width="300px" align="center">
       </el-table-column>
+      <el-table-column label="出生日期" prop="birthDay" width="200px" align="center">
+      </el-table-column>
       <el-table-column label="修改时间" prop="modifiedTime" width="200px" align="center">
       </el-table-column>
       <el-table-column label="状态" width="60" align="center">

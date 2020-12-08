@@ -8,6 +8,7 @@
           :key="item.id"
           :label="item.name"
           :value="item.id">
+          {{item.id}}-{{item.name}}
         </el-option>
       </el-select>
       <el-select v-model="dormitoryQuery.storey" clearable placeholder="请选择楼层" @change="handleFilter">
@@ -216,7 +217,7 @@
         <el-form-item label="宿舍名">
           <el-input v-model="dormitory.roomNum" placeholder="输入宿舍名，例如：101"/>
         </el-form-item>
-        <el-form-item label="最大入住人数">
+        <el-form-item label="最大入住">
           <el-input v-model="dormitory.maxNum" placeholder="最大入住人数"/>
         </el-form-item>
         <el-form-item label="状态">
@@ -454,6 +455,12 @@
       //修改方法
       updateDormitory() {
         dormitoryApi.updateDormitory(this.dormitory).then(response => {
+          if(this.dormitory.status==='无损坏'){
+            this.dormitory.status=0
+          }
+          if(this.dormitory.status==='需维修'){
+            this.dormitory.status=1
+          }
           this.$message({
             type: 'success',
             message: '修改成功！ 🧙‍♂️'

@@ -59,6 +59,12 @@ export default {
       method: 'POST',
       url: `/dormitoryService/dormitory/addNowNum/${id}`,
     })
+  },
+  findDormitoryCan() {
+    return request({
+      method: 'POST',
+      url: `/dormitoryService/dormitory/findDormitoryCan`,
+    })
   }
 
 }

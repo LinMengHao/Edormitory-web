@@ -158,6 +158,15 @@ export const constantRoutes = [
           icon: 'peoples'
         }
       },
+      {
+        path: 'self:id',
+        component: () => import('@/views/dormitory/member/member'),
+        name: 'self',
+        meta: {
+          title: '宿管个人中心',
+          icon: 'peoples'
+        }
+      },
     ]
   },
 
@@ -187,6 +196,36 @@ export const constantRoutes = [
         meta: {
           title: '宿舍列表',
           icon: 'theme'
+        }
+      },
+    ]
+  },
+  {
+    path: '/score',
+    component: Layout,
+    redirect: '/score/list',
+    name: 'score',
+    meta: {
+      title: '评分系统',
+      icon: 'edit'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/dormitory/score/list'),
+        name: 'list',
+        meta: {
+          title: '评分列表',
+          icon: 'star'
+        }
+      },
+      {
+        path: 'index',
+        component: () => import('@/views/dormitory/score/index'),
+        name: 'index',
+        meta: {
+          title: '评优',
+          icon: 'chart'
         }
       },
     ]
