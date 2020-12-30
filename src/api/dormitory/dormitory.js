@@ -65,7 +65,12 @@ export default {
       method: 'POST',
       url: `/dormitoryService/dormitory/findDormitoryCan`,
     })
-  }
-
+  },
+findByBuildId(buildId){
+    return request({
+      method: 'Get',
+      url: `/dormitoryService/dormitory/findByBuildId/${buildId}`,
+    })
+}
 }
 

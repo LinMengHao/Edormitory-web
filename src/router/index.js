@@ -220,6 +220,35 @@ export const constantRoutes = [
         }
       },
       {
+        path: 'info',
+        component: () => import('@/views/dormitory/score/info'),
+        name: 'info',
+        meta: {
+          title: '评分',
+          icon: 'star'
+        }
+      },
+      {
+        path: 'violate/:id',
+        component: () => import('@/views/dormitory/score/violate'),
+        name: 'violate',
+        meta: {
+          title: '违章',
+          icon: 'star'
+        },
+        hidden: true
+      },
+      {
+        path: 'push/:id',
+        component: () => import('@/views/dormitory/score/push'),
+        name: 'push',
+        meta: {
+          title: '评分发布',
+          icon: 'star'
+        },
+        hidden: true
+      },
+      {
         path: 'index',
         component: () => import('@/views/dormitory/score/index'),
         name: 'index',

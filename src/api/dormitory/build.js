@@ -1,6 +1,12 @@
 import request from '@/utils/request'
 
 export default {
+  getAllBuild() {
+    return request({
+      method: 'POST',
+      url: `/dormitoryService/build/getAllBuild`,
+    })
+  },
   // 楼房条件查询并分页
   getBuild(current, size, buildQuery) {
     return request({

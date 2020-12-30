@@ -1,6 +1,12 @@
 import request from '@/utils/request'
 
 export default {
+  getAllMember(){
+    return request({
+      method: 'GET',
+      url: `/manageService/member/getAllMember`,
+    })
+  },
   // 条件查询并分页
   getMember(current, size, memberQuery) {
     return request({
